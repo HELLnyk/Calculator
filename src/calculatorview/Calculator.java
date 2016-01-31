@@ -1,18 +1,21 @@
 package calculatorview;
 
 import javafx.application.Application;
+import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
-import javafx.scene.control.Separator;
-import javafx.scene.control.SeparatorMenuItem;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 public class Calculator  extends Application {
+
+    private final int HEIGHT = 310;
+    private final int WIDTH = 280;
 
     String strNumberButtons[] = {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9"};
     String strOperationButtons[] = {"+", "-", "*", "/"};
@@ -23,6 +26,7 @@ public class Calculator  extends Application {
     Button functionalButtons[] = new Button[4];
     Button point;
     Button inverseNumber;
+    TextField writingField;
 
     @Override
     public void init(){
@@ -50,20 +54,26 @@ public class Calculator  extends Application {
     public void start(Stage primaryStage) throws Exception {
         primaryStage.setTitle("Calculator");
 
+        writingField = new TextField();
+        //create numbers buttons with point and negative value
         GridPane numbersPane = new GridPane();
         createNumbersTable(numbersPane);
 
-        FlowPane operationPane = new FlowPane(Orientation.VERTICAL, 10, 10);
-        FlowPane functionalPane = new FlowPane(Orientation.VERTICAL, 10, 10);
+
+        FlowPane operationPane = new FlowPane(Orientation.VERTICAL);
+        FlowPane functionalPane = new FlowPane(Orientation.VERTICAL);
         operationPane.getChildren().addAll(operationButtons);
         functionalPane.getChildren().addAll(functionalButtons);
 
-        FlowPane rootPane = new FlowPane(Orientation.HORIZONTAL, 10 ,10);
-        //rootPane.setAlignment(Pos.CENTER);
-        Scene scene = new Scene(rootPane, 400, 300);
+        FlowPane mainPane = new FlowPane(Orientation.HORIZONTAL, 10, 10);
+        mainPane.getChildren().addAll(numbersPane, operationPane, functionalPane);
+
+        VBox rootPane = new VBox(15);
+        rootPane.setPadding(new Insets(20, 20, 20, 20));
+        Scene scene = new Scene(rootPane, HEIGHT,WIDTH);
         primaryStage.setScene(scene);
 
-        rootPane.getChildren().addAll(numbersPane, operationPane, functionalPane);
+        rootPane.getChildren().addAll(writingField, mainPane);
         primaryStage.show();
     }
 
@@ -72,7 +82,6 @@ public class Calculator  extends Application {
     }
 
     private void createNumbersTable(GridPane pane){
-
         pane.add(point, 0, 0);
         pane.add(numberButtons[0], 1, 0);
         pane.add(inverseNumber, 2, 0);
